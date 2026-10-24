@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <Product>Let's Meow Toolbox</Product>
+    <Company>Hatasoft-Studio</Company>
+    <Authors>Hatasoft-Studio</Authors>
+    <Copyright>Copyright (c) 2026 Hatasoft-Studio</Copyright>
+    <RepositoryUrl>https://github.com/Hatasoft-Studio</RepositoryUrl>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <!-- 允许在 Linux 上交叉编译 Windows 目标项目 -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+</Project>

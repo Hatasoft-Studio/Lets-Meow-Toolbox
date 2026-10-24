@@ -1,0 +1,16 @@
+# Build / output
+bin/
+obj/
+dist/
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Logs
+*.log
+logs/
+
+# Local app data (runtime-generated, not part of source)

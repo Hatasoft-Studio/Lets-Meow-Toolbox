@@ -1,0 +1,25 @@
+<UserControl x:Class="LetsMeowToolbox.App.Views.UninstallerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:views="clr-namespace:LetsMeowToolbox.App.Views">
+    <UserControl.Resources>
+        <Style x:Key="ZoneHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="4">
+        <StackPanel>
+            <StackPanel>
+                <TextBlock Text="📦 卸载程序" Style="{StaticResource ZoneHeader}"/>
+                <TextBlock Text="列出已安装的 Windows 程序，支持批量卸载、残留扫描与清理报告。所有卸载均需你逐个确认。"
+                           FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <views:UninstallerPanel x:Name="Uninstaller" Margin="0,16,0,0"
+                                    RequestUnlock="OnRequestUnlock"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

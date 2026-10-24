@@ -1,0 +1,38 @@
+<UserControl x:Class="LetsMeowToolbox.App.Views.BeginnerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:views="clr-namespace:LetsMeowToolbox.App.Views">
+    <UserControl.Resources>
+        <Style x:Key="ZoneHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="4">
+        <StackPanel>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="🟢 新手区" Style="{StaticResource ZoneHeader}"/>
+                    <TextBlock Text="全部为低风险常规设置，直接点开关即可生效；操作都会先让你确认。"
+                               FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <Button Grid.Column="1" Content="一键还原全部设置" Click="OnRestoreAll"
+                        VerticalAlignment="Center" Style="{DynamicResource FluentButton}"/>
+            </Grid>
+
+            <ItemsControl ItemsSource="{Binding Features}" Margin="0,16,0,0"
+                          ItemTemplate="{StaticResource FeatureCardTemplate}"/>
+
+            <TextBlock Text="预装应用卸载（UWP）" Style="{StaticResource ZoneHeader}" Margin="0,8,0,8"/>
+            <views:UwpPanel/>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

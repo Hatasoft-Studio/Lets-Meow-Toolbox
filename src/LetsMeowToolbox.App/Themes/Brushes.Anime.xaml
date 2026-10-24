@@ -1,0 +1,13 @@
+<!-- Let's Meow Toolbox · 二次元化粉色画刷（叠加在浅色之上，覆盖强调色与选中底） -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- 粉色主题：按钮/复选框/强调为粉色，悬停淡粉，按下深粉 -->
+    <SolidColorBrush x:Key="AccentBrush" Color="#E8519C"/>
+    <SolidColorBrush x:Key="AccentHover" Color="#F26AA8"/>
+    <SolidColorBrush x:Key="AccentPressed" Color="#D6438C"/>
+    <SolidColorBrush x:Key="AccentSoft" Color="#FDEBF4"/>
+    <SolidColorBrush x:Key="AccentText" Color="#C2347C"/>
+    <SolidColorBrush x:Key="NavSelectedBrush" Color="#FDEBF4"/>
+
+</ResourceDictionary>

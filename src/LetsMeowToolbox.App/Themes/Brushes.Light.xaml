@@ -1,0 +1,62 @@
+<!-- Let's Meow Toolbox · Fluent (Win11) 浅色画刷令牌（固定浅色；Mica 兜底） -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ===== 基础层（Mica 兜底 + 层叠） ===== -->
+    <SolidColorBrush x:Key="AppBackground" Color="#F3F3F3"/>
+    <SolidColorBrush x:Key="RegionBrush" Color="#F7F7F7"/>
+    <SolidColorBrush x:Key="HeaderBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="SurfaceHover" Color="#F5F5F5"/>
+    <SolidColorBrush x:Key="SurfacePressed" Color="#EBEBEB"/>
+    <SolidColorBrush x:Key="NavSelectedBrush" Color="#F0F0F0"/>
+    <SolidColorBrush x:Key="CardBorder" Color="#ECECEC"/>
+    <SolidColorBrush x:Key="BorderLine" Color="#E1E1E1"/>
+    <SolidColorBrush x:Key="DividerBrush" Color="#E5E5E5"/>
+
+    <!-- ===== 文字 ===== -->
+    <SolidColorBrush x:Key="TextPrimary" Color="#1A1A1A"/>
+    <SolidColorBrush x:Key="TextSecondary" Color="#5C5C5C"/>
+    <SolidColorBrush x:Key="TextTertiary" Color="#7A7A7A"/>
+    <SolidColorBrush x:Key="TextDisabled" Color="#A8A8A8"/>
+
+    <!-- ===== 系统强调色（蓝；二次元模式会被粉色覆盖） ===== -->
+    <SolidColorBrush x:Key="AccentBrush" Color="#0078D4"/>
+    <SolidColorBrush x:Key="AccentHover" Color="#1984D8"/>
+    <SolidColorBrush x:Key="AccentPressed" Color="#0067C0"/>
+    <SolidColorBrush x:Key="AccentSoft" Color="#E7F1FA"/>
+    <SolidColorBrush x:Key="AccentText" Color="#005FB8"/>
+
+    <!-- ===== 品牌粉（开关开态/加载条/光标；恒为粉） ===== -->
+    <SolidColorBrush x:Key="SwitchOnBrush" Color="#E8519C"/>
+    <SolidColorBrush x:Key="SwitchOnHover" Color="#F26AA8"/>
+    <SolidColorBrush x:Key="SwitchOnPressed" Color="#D6438C"/>
+    <SolidColorBrush x:Key="SwitchOnSoft" Color="#FDEBF4"/>
+    <SolidColorBrush x:Key="PinkDot" Color="#E8519C"/>
+    <SolidColorBrush x:Key="PinkLight" Color="#FFB3D6"/>
+
+    <!-- ===== 语义色 ===== -->
+    <SolidColorBrush x:Key="DangerBrush" Color="#C42B1C"/>
+    <SolidColorBrush x:Key="DangerHover" Color="#D13527"/>
+    <SolidColorBrush x:Key="DangerPressed" Color="#B0261A"/>
+    <SolidColorBrush x:Key="DangerSoft" Color="#FCE8E6"/>
+    <SolidColorBrush x:Key="SuccessBrush" Color="#0F7B0F"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="#9D5D00"/>
+
+    <!-- ===== Win11 Fluent 标准 token 别名（浅色） ===== -->
+    <SolidColorBrush x:Key="AccentFillColorDefault" Color="#0078D4"/>
+    <SolidColorBrush x:Key="AccentTextFillColorPrimary" Color="#005FB8"/>
+    <SolidColorBrush x:Key="ControlFillColorDefault" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="ControlFillColorSecondary" Color="#F9F9F9"/>
+    <SolidColorBrush x:Key="ControlStrokeColorDefault" Color="#E1E1E1"/>
+    <SolidColorBrush x:Key="SubtleFillColorSecondary" Color="#F5F5F5"/>
+    <SolidColorBrush x:Key="CardBackgroundFillColorDefault" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="CardStrokeColorDefault" Color="#ECECEC"/>
+    <SolidColorBrush x:Key="LayerFillColorDefault" Color="#F3F3F3"/>
+    <SolidColorBrush x:Key="LayerFillColorAlt" Color="#F7F7F7"/>
+    <SolidColorBrush x:Key="TextFillColorPrimary" Color="#1A1A1A"/>
+    <SolidColorBrush x:Key="TextFillColorSecondary" Color="#5C5C5C"/>
+    <SolidColorBrush x:Key="TextFillColorDisabled" Color="#A8A8A8"/>
+    <SolidColorBrush x:Key="SolidBackgroundFillColorBase" Color="#F3F3F3"/>
+
+</ResourceDictionary>

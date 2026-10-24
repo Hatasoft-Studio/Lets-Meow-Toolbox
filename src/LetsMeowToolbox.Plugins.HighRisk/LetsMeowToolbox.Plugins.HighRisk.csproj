@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>LetsMeowToolbox.Plugins.HighRisk</RootNamespace>
+    <AssemblyName>LetsMeowToolbox.Plugins.HighRisk</AssemblyName>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LetsMeowToolbox.PluginAbstractions\LetsMeowToolbox.PluginAbstractions.csproj" />
+  </ItemGroup>
+
+  <!--
+    开发期便捷：构建后把插件 DLL 复制到主程序常规输出目录的 plugins 文件夹，
+    方便在 Visual Studio 里直接 F5 运行调试。正式发布打包由 build/publish*.ps1 统一处理。
+  -->
+  <Target Name="DeployPluginToApp" AfterTargets="Build">
+    <PropertyGroup>
+      <PluginDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\LetsMeowToolbox.App\bin\$(Configuration)\net8.0-windows\plugins'))</PluginDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(PluginDir)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(PluginDir)" />
+    <Message Importance="high" Text="高危插件已部署到：$(PluginDir)" />
+  </Target>
+
+</Project>

@@ -1,0 +1,48 @@
+<UserControl x:Class="LetsMeowToolbox.App.Views.AdvancedView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:views="clr-namespace:LetsMeowToolbox.App.Views">
+    <UserControl.Resources>
+        <Style x:Key="ZoneHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="4">
+        <StackPanel>
+
+            <StackPanel>
+                <TextBlock Text="🟡 高级区" Style="{StaticResource ZoneHeader}"/>
+                <TextBlock Text="包含会影响系统行为的中等风险设置（如暂停/禁用更新）。进入前需确认风险。"
+                           FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <hc:Card Style="{DynamicResource FluentCard}" Margin="0,12,0,12" Padding="14" Background="#14D32F2F" BorderBrush="#33D32F2F" BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="⚠ 风险提示（必读）" FontWeight="SemiBold" Foreground="#FFD32F2F"/>
+                    <TextBlock Text="本区域操作可能改变系统更新、服务等行为。请在理解后果后自行决定是否使用。"
+                               TextWrapping="Wrap" FontSize="12" Margin="0,6,0,8" Foreground="{DynamicResource TextSecondary}"/>
+                    <CheckBox Style="{DynamicResource FluentCheckBox}" x:Name="ChkUnlock" Content="我已阅读并理解风险，解锁高级区"
+                              FontWeight="SemiBold" Foreground="#FFD32F2F" Checked="OnUnlock" Unchecked="OnLock"/>
+                </StackPanel>
+            </hc:Card>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Windows 更新设置" Style="{StaticResource ZoneHeader}" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Content="高级区一键还原" Click="OnRestoreAll"
+                        VerticalAlignment="Center" Style="{DynamicResource FluentButton}"/>
+            </Grid>
+
+            <ItemsControl ItemsSource="{Binding Features}" Margin="0,12,0,0"
+                          IsEnabled="{Binding Unlocked}"
+                          ItemTemplate="{StaticResource FeatureCardTemplate}"/>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

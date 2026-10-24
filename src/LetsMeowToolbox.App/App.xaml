@@ -1,0 +1,17 @@
+<Application x:Class="LetsMeowToolbox.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- HandyControl 基础主题（为 hc:Card / hc:TextBox / Dialog / Growl 提供模板） -->
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
+                <!-- 自有 Fluent 控件样式（键值自保证） -->
+                <ResourceDictionary Source="Themes/FluentStyles.xaml"/>
+                <!-- 共享模板与转换器 -->
+                <ResourceDictionary Source="Views/SharedResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>LetsMeowToolbox.App</RootNamespace>
+    <!-- 主程序名固定为 LetsMeowToolbox.exe -->
+    <AssemblyName>LetsMeowToolbox</AssemblyName>
+    <!-- 版本号（v0.1.1 起）：主版本.次版本.修订号，更新日志见 Services/AppInfo.cs -->
+    <Version>0.1.1</Version>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <!--
+      单文件发布：默认不强制 RID（普通 build 或调试仍产出常规 exe）。
+      发布脚本通过命令行传入 PublishSingleFile 与 SelfContained 开关。
+      当发布脚本仅设置 PublishSingleFile 而未给 RID 时，这里兜底指定 win-x64。
+    -->
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)'=='' and '$(PublishSingleFile)'=='true'">win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract Condition="'$(SelfContained)'=='true'">true</IncludeNativeLibrariesForSelfExtract>
+    <!-- 程序 / 窗口图标 -->
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HandyControl" Version="3.5.1" />
+  </ItemGroup>
+
+  <!-- 嵌入资源：logo / 图标（打包进单文件，无需随 exe 输出） -->
+  <ItemGroup>
+    <Resource Include="Assets\logo_banner.png"/>
+    <Resource Include="Assets\app_icon.png"/>
+    <Resource Include="Assets\app.ico"/>
+  </ItemGroup>
+
+  <!-- 嵌入资源：GPL-3.0 协议全文（首次启动协议弹窗 / 关于页使用） -->
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\gpl-3.0.txt" />
+  </ItemGroup>
+
+  <!-- 二次元化壁纸：随程序输出为松文件（exe 同目录），运行时从磁盘加载 -->
+  <ItemGroup>
+    <None Include="Assets\wallpaper.png" CopyToOutputDirectory="PreserveNewest"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LetsMeowToolbox.PluginAbstractions\LetsMeowToolbox.PluginAbstractions.csproj" />
+  </ItemGroup>
+
+  <!-- 外置 assets 资源：可选嵌入打包。存在 assets 目录时随输出复制。 -->
+  <ItemGroup Condition="Exists('assets')">
+    <None Include="assets\**\*.*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
