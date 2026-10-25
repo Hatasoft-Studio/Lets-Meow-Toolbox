@@ -11,15 +11,25 @@ namespace LetsMeowToolbox.App.Services;
 public static class AppInfo
 {
     /// <summary>当前版本号（显示用）。</summary>
-    public const string Version = "0.1.1";
+    public const string Version = "0.1.2";
 
     /// <summary>GitHub 仓库。</summary>
     public const string RepoName = "Hatasoft-Studio/Lets-Meow-Toolbox";
     public const string RepoUrl = "https://github.com/Hatasoft-Studio/Lets-Meow-Toolbox/";
 
+    /// <summary>更新日志结尾固定致谢语。</summary>
+    public const string ChangelogFooter =
+        "感谢您对本项目的支持！如果出现了任何问题或Bug，请前往本项目的官方Github仓库提Issue！\n" +
+        "官方Github仓库：https://github.com/Hatasoft-Studio/Lets-Meow-Toolbox";
+
     /// <summary>更新日志（按版本倒序，最新在上）。</summary>
     public static readonly IReadOnlyList<(string Version, string Date, string[] Changes)> Changelog = new[]
     {
+        ("v0.1.2", "2026-10-24", new[]
+        {
+            "【新增】所有页面加入网页风格的右侧滚动条：内容超出窗口时自动出现，可上下拖动滑块、点击轨道翻页，滑块悬停/拖动时变粉色，圆角 Win11 样式。",
+            "【修复】解除占用页占用进程列表在小窗口下高度塌陷、滚轮被内部列表吞掉的问题，现在可随整页正常滚动。"
+        }),
         ("v0.1.1", "2026-10-24", new[]
         {
             "【修复】日志系统：日志改为全局记录，记录用户全部设置操作、执行结果与时间（INFO/WARN/ERROR），不再为空文件。",

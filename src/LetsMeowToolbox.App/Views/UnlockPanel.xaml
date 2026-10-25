@@ -7,7 +7,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -39,9 +39,10 @@
             </StackPanel>
         </Grid>
 
-        <hc:Card Style="{DynamicResource FluentCard}" Grid.Row="3" Padding="8" Margin="0,0,0,8">
-            <ListBox ItemsSource="{Binding Occupiers}" BorderThickness="0" x:Name="ListOccupiers">
-                <ListBox.ItemTemplate>
+        <hc:Card Style="{DynamicResource FluentCard}" Grid.Row="3" Padding="8" Margin="0,0,0,8"
+                 MinHeight="120">
+            <ItemsControl ItemsSource="{Binding Occupiers}">
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="4">
                             <Grid.ColumnDefinitions>
@@ -63,8 +64,8 @@
                                     Tag="{Binding}" VerticalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </hc:Card>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal">

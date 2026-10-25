@@ -36,6 +36,9 @@ public partial class ChangelogDialog : Window
         sb.AppendLine("• 主版本号：重大架构调整 / 破坏性变更时 +1（0.x 阶段指整体重构）");
         sb.AppendLine("• 次版本号：新增功能时 +1");
         sb.AppendLine("• 修订号：修复缺陷 / 优化时 +1");
+        // 结尾空一行后追加固定致谢语
+        sb.AppendLine();
+        sb.AppendLine(AppInfo.ChangelogFooter);
         return sb.ToString().TrimEnd();
     }
 

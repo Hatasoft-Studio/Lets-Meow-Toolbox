@@ -8,7 +8,7 @@
     <!-- 主程序名固定为 LetsMeowToolbox.exe -->
     <AssemblyName>LetsMeowToolbox</AssemblyName>
     <!-- 版本号（v0.1.1 起）：主版本.次版本.修订号，更新日志见 Services/AppInfo.cs -->
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
