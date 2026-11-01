@@ -121,7 +121,7 @@ dotnet publish src/LetsMeowToolbox.App -c Release -r win-x64 \
 
 ## 特别鸣谢
 
-详见程序内「💖 特别鸣谢」页面。本项目参考并致谢以下开源项目（均附 GitHub 链接）：
+详见程序内「特别鸣谢」页面。本项目参考并致谢以下开源项目（均附 GitHub 链接）：
 
 - **HandyControl**（MIT）— UI 控件库
 - **Open-Shell**（MIT）— 经典右键菜单思路
@@ -130,6 +130,10 @@ dotnet publish src/LetsMeowToolbox.App -c Release -r win-x64 \
 - **Sophia Script**（CC-BY-NC-SA-4.0）— 系统设置脚本思路
 
 ## 常见问题（GUI 无法打开时如何排查）
+
+> [!WARNING]
+> **作者提醒：**
+> 遇到任何问题请先[**查看在线文档**](https://doc.lets-meow-toolbox.hatasoft365.top/) ，**在线文档可以解决99%的问题** ！如果因为您遇到问题不看文档而提的issue，我会直接关闭的！到时候不要说我用户遇到问题不管！
 
 本程序已内置**全局异常捕获与日志**：若启动或运行出错，会弹出错误对话框并写入日志，不会“静默打不开”。
 
