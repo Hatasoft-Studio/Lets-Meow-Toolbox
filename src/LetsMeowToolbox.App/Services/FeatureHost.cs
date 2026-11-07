@@ -40,7 +40,7 @@ public static class FeatureHost
         if (ConfirmOnRisk && f.Risk != "🟢")
         {
             if (!Ui.Confirm(owner,
-                    $"{f.Title}\n\n{f.Description}\n\n确定要执行该操作吗？", "⚠ 风险确认"))
+                    $"{f.Title}\n\n{f.Description}\n\n{Loc.T("确定要执行该操作吗？")}", Loc.T("⚠ 风险确认")))
             {
                 _suppress = true;
                 f.IsOn = !f.IsOn;
@@ -51,7 +51,7 @@ public static class FeatureHost
 
         var (ok, msg) = f.Apply(f.IsOn);
         LogService.Instance.Info($"功能操作：{f.Title} → {(f.IsOn ? "开启" : "关闭")}，结果={(ok ? "成功" : "失败")}：{msg}");
-        if (ok) Ui.Success(msg); else Ui.Error(msg);
+        if (ok) Ui.Success(Loc.T(msg)); else Ui.Error(Loc.T(msg));
     }
 
     /// <summary>一键还原后刷新全部卡片状态（不触发 Apply）。</summary>

@@ -90,7 +90,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <CheckBox Style="{DynamicResource FluentCheckBox}" IsChecked="{Binding IsChecked, Mode=TwoWay}" VerticalAlignment="Center"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Type}" FontSize="12"
+                                <TextBlock Grid.Column="1" Text="{Binding TypeText}" FontSize="12"
                                            Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center"/>
                                 <TextBlock Grid.Column="2" Text="{Binding Target}" FontSize="12"
                                            TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>

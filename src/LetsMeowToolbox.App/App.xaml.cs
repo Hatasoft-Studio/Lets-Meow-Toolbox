@@ -1,4 +1,5 @@
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using LetsMeowToolbox.App.Services;
@@ -15,6 +16,9 @@ public partial class App : Application
         // 全局日志单例初始化（先于一切，供后续所有操作记录）
         LogService.Instance.Info("======== Let's Meow Toolbox 启动 ========");
         _logFile = LogService.Instance.LogFilePath;
+
+        // 多语言：加载内嵌简体中文 + 扫描 ./lang 下的 .meowlang 语言包，并恢复上次选择
+        LocalizationService.Instance.Initialize();
 
         // 全局异常捕获：任何启动/运行时错误都弹窗显示并落日志，而不是“无法打开”静默失败
         DispatcherUnhandledException += OnDispatcherUnhandled;
@@ -48,14 +52,16 @@ public partial class App : Application
             var main = new MainWindow();
             main.Show();
             LogService.Instance.Info("主窗口已创建并显示。");
+
+            CheckUpdatesOnStartup(main);
         }
         catch (Exception ex)
         {
             WriteCrash(ex);
             MessageBox.Show(
-                "Let's Meow Toolbox 启动时发生错误：\n\n" + ex.Message +
-                "\n\n详细信息已写入：\n" + _logFile,
-                "启动失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                Loc.T("Let's Meow Toolbox 启动时发生错误：") + "\n\n" + ex.Message +
+                "\n\n" + Loc.T("详细信息已写入：") + "\n" + _logFile,
+                Loc.T("启动失败"), MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown(-1);
         }
 
@@ -69,13 +75,55 @@ public partial class App : Application
         base.OnExit(e);
     }
 
+    /// <summary>
+    /// 启动时静默检查更新：
+    /// • 当前版本受支持（含请求失败、已是最新、有新版本）→ 继续使用，不显示任何提示；
+    /// • 当前版本已停止支持 → 弹出强制更新提示，提示关闭后自动退出程序。
+    /// </summary>
+    private static void CheckUpdatesOnStartup(Window owner)
+    {
+        _ = Task.Run(async () =>
+        {
+            UpdateCheckResult result;
+            try
+            {
+                result = await UpdateService.CheckAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                LogService.Instance.Warn($"更新：启动时检查更新失败：{ex.Message}");
+                return;
+            }
+
+            if (!result.Success || !result.Unsupported) return;
+
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                try
+                {
+                    UpdateDialog.ShowRequired(owner.IsLoaded ? owner : null, result);
+                }
+                catch (Exception ex)
+                {
+                    LogService.Instance.Warn($"更新：显示强制更新提示失败：{ex.Message}");
+                }
+                finally
+                {
+                    LogService.Instance.Warn(
+                        $"更新：当前版本 v{AppInfo.Version} 已停止支持，程序退出。");
+                    Application.Current.Shutdown(0);
+                }
+            });
+        });
+    }
+
     private void OnDispatcherUnhandled(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         WriteCrash(e.Exception);
         MessageBox.Show(
-            "运行过程中发生错误：\n\n" + e.Exception.Message +
-            "\n\n详细信息已写入：\n" + _logFile,
-            "错误", MessageBoxButton.OK, MessageBoxImage.Warning);
+            Loc.T("运行过程中发生错误：") + "\n\n" + e.Exception.Message +
+            "\n\n" + Loc.T("详细信息已写入：") + "\n" + _logFile,
+            Loc.T("错误"), MessageBoxButton.OK, MessageBoxImage.Warning);
         e.Handled = true;
     }
 

@@ -1,4 +1,5 @@
 using LetsMeowToolbox.App.Models;
+using LetsMeowToolbox.App.Services;
 using LetsMeowToolbox.App.Utils;
 
 namespace LetsMeowToolbox.App.Modules.Unlock;
@@ -32,9 +33,9 @@ public static class UnlockService
     public static (bool ok, string message) CloseProcess(int pid, string processName, bool force)
     {
         if (ProcessUtil.IsProtectedProcess(processName, pid))
-            return (false, "该进程属于系统核心进程，出于安全考虑已禁止结束");
+            return (false, Loc.T("该进程属于系统核心进程，出于安全考虑已禁止结束"));
         bool ok = ProcessUtil.CloseProcess(pid, force);
-        return (ok, ok ? "已关闭该程序" : "关闭失败，进程可能已退出或无权限");
+        return (ok, ok ? Loc.T("已关闭该程序") : Loc.T("关闭失败，进程可能已退出或无权限"));
     }
 
     /// <summary>安排开机延迟删除。</summary>

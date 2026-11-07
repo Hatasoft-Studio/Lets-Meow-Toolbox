@@ -1,6 +1,7 @@
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using LetsMeowToolbox.App.Services;
 
 namespace LetsMeowToolbox.App.Views;
 
@@ -31,8 +32,8 @@ public partial class LicenseDialog : Window
     {
         var d = new LicenseDialog();
         d._agreeMode = false;
-        d.TxtTitle.Text = "开源许可协议";
-        d.TxtHint.Text = "Let's Meow! Toolbox 基于 GNU General Public License v3.0（GPL-3.0）开源。";
+        d.TxtTitle.Text = Loc.T("开源许可协议");
+        d.TxtHint.Text = Loc.T("Let's Meow! Toolbox 基于 GNU General Public License v3.0（GPL-3.0）开源。");
         d.BtnAgree.Visibility = Visibility.Collapsed;
         d.BtnDecline.Visibility = Visibility.Collapsed;
         d.BtnClose.Visibility = Visibility.Visible;
@@ -48,15 +49,15 @@ public partial class LicenseDialog : Window
             var asm = Assembly.GetExecutingAssembly();
             var name = asm.GetManifestResourceNames()
                 .FirstOrDefault(n => n.Contains("gpl-3.0", StringComparison.OrdinalIgnoreCase));
-            if (name == null) return "（许可协议文本未找到：gpl-3.0.txt）";
+            if (name == null) return Loc.T("（许可协议文本未找到：gpl-3.0.txt）");
             using var s = asm.GetManifestResourceStream(name);
-            if (s == null) return "（许可协议文本读取失败）";
+            if (s == null) return Loc.T("（许可协议文本读取失败）");
             using var reader = new StreamReader(s);
             return reader.ReadToEnd();
         }
         catch (Exception ex)
         {
-            return $"（许可协议文本读取失败：{ex.Message}）";
+            return Loc.Tf("（许可协议文本读取失败：{0}）", ex.Message);
         }
     }
 

@@ -48,24 +48,24 @@ public partial class FluentDialog : Window
         {
             case MessageBoxButton.OK:
                 d.BtnOk.Visibility = Visibility.Visible;
-                d.BtnOk.Content = "确定";
+                d.BtnOk.Content = Loc.T("确定");
                 d._primaryResult = MessageBoxResult.OK;
                 break;
             case MessageBoxButton.OKCancel:
                 d.BtnOk.Visibility = Visibility.Visible;
-                d.BtnOk.Content = "确定";
+                d.BtnOk.Content = Loc.T("确定");
                 d.BtnCancel.Visibility = Visibility.Visible;
                 d._primaryResult = MessageBoxResult.OK;
                 break;
             case MessageBoxButton.YesNo:
                 d.BtnOk.Visibility = Visibility.Visible;
-                d.BtnOk.Content = "是";
+                d.BtnOk.Content = Loc.T("是");
                 d.BtnNo.Visibility = Visibility.Visible;
                 d._primaryResult = MessageBoxResult.Yes;
                 break;
             case MessageBoxButton.YesNoCancel:
                 d.BtnOk.Visibility = Visibility.Visible;
-                d.BtnOk.Content = "是";
+                d.BtnOk.Content = Loc.T("是");
                 d.BtnNo.Visibility = Visibility.Visible;
                 d.BtnCancel.Visibility = Visibility.Visible;
                 d._primaryResult = MessageBoxResult.Yes;

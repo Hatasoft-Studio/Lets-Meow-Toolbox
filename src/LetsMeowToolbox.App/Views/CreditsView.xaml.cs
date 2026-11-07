@@ -9,9 +9,12 @@ namespace LetsMeowToolbox.App.Views;
 /// <summary>鸣谢项目条目。</summary>
 public sealed class CreditItem
 {
-    public required string Name { get; init; }
+    private readonly string _name = string.Empty;
+    private readonly string _usage = string.Empty;
+
+    public required string Name { get => Loc.T(_name); init => _name = value; }
     public required string License { get; init; }
-    public required string Usage { get; init; }
+    public required string Usage { get => Loc.T(_usage); init => _usage = value; }
     public required string Repo { get; init; }
 }
 
@@ -81,7 +84,7 @@ public partial class CreditsView : UserControl
         catch (Exception ex)
         {
             LogService.Instance.Error($"特别鸣谢：打开 {url} 失败：{ex.Message}");
-            Ui.Error("无法打开浏览器访问该地址。");
+            Ui.Error(Loc.T("无法打开浏览器访问该地址。"));
         }
     }
 
@@ -95,7 +98,7 @@ public partial class CreditsView : UserControl
         catch (Exception ex)
         {
             LogService.Instance.Error($"特别鸣谢：打开 GitHub 仓库失败：{ex.Message}");
-            Ui.Error("无法打开浏览器访问仓库地址。");
+            Ui.Error(Loc.T("无法打开浏览器访问仓库地址。"));
         }
     }
 }

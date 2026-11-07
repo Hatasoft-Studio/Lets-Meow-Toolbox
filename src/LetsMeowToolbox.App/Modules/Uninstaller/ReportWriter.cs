@@ -1,4 +1,5 @@
 using System.IO;
+using LetsMeowToolbox.App.Services;
 
 namespace LetsMeowToolbox.App.Modules.Uninstaller;
 
@@ -16,17 +17,17 @@ public static class ReportWriter
         var sb = new System.Text.StringBuilder();
         sb.AppendLine($"# {title}");
         sb.AppendLine();
-        sb.AppendLine($"- 生成时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-        sb.AppendLine("- 由 Let's Meow Toolbox（Hatasoft-Studio，GPL-3.0）导出");
+        sb.AppendLine(Loc.Tf("- 生成时间：{0}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+        sb.AppendLine(Loc.T("- 由 Let's Meow Toolbox（Hatasoft-Studio，GPL-3.0）导出"));
         sb.AppendLine();
-        sb.AppendLine("| 项目 | 结果 |");
+        sb.AppendLine(Loc.T("| 项目 | 结果 |"));
         sb.AppendLine("| --- | --- |");
         foreach (var (item, result) in rows)
         {
             sb.AppendLine($"| {item.Replace("|", "\\|")} | {result.Replace("|", "\\|")} |");
         }
         sb.AppendLine();
-        sb.AppendLine("> 说明：本报告由工具自动生成，仅供参考。");
+        sb.AppendLine(Loc.T("> 说明：本报告由工具自动生成，仅供参考。"));
         File.WriteAllText(file, sb.ToString());
         return file;
     }

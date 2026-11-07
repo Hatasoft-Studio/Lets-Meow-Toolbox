@@ -1,5 +1,6 @@
 using System.Text.Json;
 using LetsMeowToolbox.App.Models;
+using LetsMeowToolbox.App.Services;
 using LetsMeowToolbox.App.Utils;
 
 namespace LetsMeowToolbox.App.Modules.Beginner;
@@ -66,7 +67,7 @@ public static class UwpCleanModule
     {
         var script = $"$ErrorActionPreference='Stop'; Remove-AppxPackage -Package '{packageFullName}'";
         var r = PowerShellRunner.Run(script);
-        if (r.Success) return (true, "卸载成功");
-        return (false, $"卸载失败：{r.Output.Trim().Split('\n').LastOrDefault() ?? "未知错误"}");
+        if (r.Success) return (true, Loc.T("卸载成功"));
+        return (false, Loc.Tf("卸载失败：{0}", r.Output.Trim().Split('\n').LastOrDefault() ?? Loc.T("未知错误")));
     }
 }

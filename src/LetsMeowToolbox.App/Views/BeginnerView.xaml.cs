@@ -48,12 +48,12 @@ public partial class BeginnerView : UserControl, INotifyPropertyChanged
     private void OnRestoreAll(object sender, RoutedEventArgs e)
     {
         if (!Ui.Confirm(Window.GetWindow(this),
-                "将还原新手区全部设置到系统默认状态。\n已启用过的开关都会恢复，确定继续吗？", "一键还原"))
+                Loc.T("将还原新手区全部设置到系统默认状态。\n已启用过的开关都会恢复，确定继续吗？"), Loc.T("一键还原")))
             return;
         var count = BackupService.Instance.RestoreAll();
         FeatureHost.RefreshStates(Features);
         CmdRunner.RestartExplorer();
         LogService.Instance.Info($"新手区：一键还原 {count} 项设置。");
-        Ui.Success($"已还原 {count} 项设置");
+        Ui.Success(Loc.Tf("已还原 {0} 项设置", count));
     }
 }

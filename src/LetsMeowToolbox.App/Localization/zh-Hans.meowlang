@@ -1,0 +1,12 @@
+{
+  "id": "zh-Hans",
+  "name": "简体中文",
+  "author": "Hatasoft-Studio",
+  "version": "1.1.0",
+  "source": "zh-Hans",
+  "strings": {},
+  "authorWebsite": "https://lets-meow-toolbox.hatasoft365.top",
+  "languageType": "简体中文",
+  "appVersion": ">=0.2.0",
+  "description": "程序内嵌的简体中文（源语言），无需安装语言包。"
+}

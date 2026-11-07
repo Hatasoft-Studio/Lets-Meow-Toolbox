@@ -58,6 +58,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     };
 
     private object[] _views;
+    private int _currentPage;
 
     public MainWindow()
     {
@@ -91,16 +92,35 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         // 安装窗口背景（Mica 或纯色兜底）——窗口句柄就绪后调用
         SourceInitialized += (_, _) => ThemeService.ApplyToWindow(this);
 
+        // 语言切换：重建导航与全部页面，并刷新顶栏文字
+        LocalizationService.Instance.LanguageChanged += OnLanguageChanged;
+
         BuildNav();
         InitCursor();
         SelectPage(0);
         PlayWindowEntrance();
         RefreshAdmin();
-        TxtOs.Text = $"系统：{OsVersionService.FriendlyName} · {(OsVersionService.Is64Bit ? "x64" : "")}";
+        TxtOs.Text = Loc.Tf("系统：{0}",
+            $"{OsVersionService.FriendlyName} · {(OsVersionService.Is64Bit ? "x64" : "")}");
+    }
+
+    private void OnLanguageChanged()
+    {
+        NavPanel.Children.Clear();
+        BuildNav();
+        TxtTitle.Text = Loc.T(_pages[_currentPage].title);
+        TxtGreeting.Text = Loc.T(_pages[_currentPage].greeting);
+        RefreshAdmin();
+        TxtOs.Text = Loc.Tf("系统：{0}",
+            $"{OsVersionService.FriendlyName} · {(OsVersionService.Is64Bit ? "x64" : "")}");
+        ReloadAllViews();
+        // 顶栏与当前页面按新语言重新翻译
+        LocalizationService.Instance.ApplyToDeferred(this);
     }
 
     private void BuildNav()
     {
+        NavPanel.Children.Clear();
         for (int i = 0; i < _pages.Count; i++)
         {
             int idx = i;
@@ -115,7 +135,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             };
             var label = new System.Windows.Controls.TextBlock
             {
-                Text = _pages[i].title,
+                Text = Loc.T(_pages[i].title),
                 VerticalAlignment = System.Windows.VerticalAlignment.Center
             };
             var sp = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
@@ -160,8 +180,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         };
         int idx = current >= 0 && current < _views.Length ? current : 0;
         MainContent.Content = _views[idx];
-        TxtTitle.Text = _pages[idx].title;
-        TxtGreeting.Text = _pages[idx].greeting;
+        LocalizationService.Instance.ApplyToDeferred(_views[idx] as DependencyObject ?? this);
+        _currentPage = idx;
+        TxtTitle.Text = Loc.T(_pages[idx].title);
+        TxtGreeting.Text = Loc.T(_pages[idx].greeting);
         // 顶部二次元开关与设置同步
         _showAnime = SettingsService.Instance.ShowAnime;
         Raise(nameof(ShowAnime));
@@ -170,8 +192,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void SelectPage(int index)
     {
         if (MainContent == null) return;
-        TxtTitle.Text = _pages[index].title;
-        TxtGreeting.Text = _pages[index].greeting;
+        _currentPage = index;
+        TxtTitle.Text = Loc.T(_pages[index].title);
+        TxtGreeting.Text = Loc.T(_pages[index].greeting);
         PlayLoadBar();
 
         var next = _views[index];
@@ -182,6 +205,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         fadeOut.Completed += (_, _) =>
         {
             MainContent.Content = next;
+            LocalizationService.Instance.ApplyToDeferred(next as DependencyObject ?? this);
             MainContent.Opacity = 0;
 
             // 新页初始从右偏移，随后滑入归位并淡入
@@ -246,15 +270,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         bool admin = AdminService.IsAdmin;
         TxtAdminStatus.Text = admin
-            ? "管理员权限：已提升"
-            : "当前为普通权限。涉及系统设置的功能需要管理员权限。";
+            ? Loc.T("管理员权限：已提升")
+            : Loc.T("当前为普通权限。涉及系统设置的功能需要管理员权限。");
         BtnElevate.Visibility = admin ? Visibility.Collapsed : Visibility.Visible;
     }
 
     private void OnElevate(object sender, RoutedEventArgs e)
     {
         if (AdminService.IsAdmin) return;
-        if (Ui.Confirm(this, "将以管理员身份重新运行本程序。当前未完成的设置会丢失，是否继续？", "管理员权限"))
+        if (Ui.Confirm(this, Loc.T("将以管理员身份重新运行本程序。当前未完成的设置会丢失，是否继续？"), Loc.T("管理员权限")))
             AdminService.RelaunchAsAdmin();
     }
 

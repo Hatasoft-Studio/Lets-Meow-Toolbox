@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.Win32;
 using LetsMeowToolbox.App.Models;
+using LetsMeowToolbox.App.Services;
 using LetsMeowToolbox.App.Utils;
 
 namespace LetsMeowToolbox.App.Modules.Uninstaller;
@@ -78,13 +79,13 @@ public static class UninstallerService
         var cmd = !string.IsNullOrWhiteSpace(entry.QuietUninstallString)
             ? entry.QuietUninstallString
             : entry.UninstallString;
-        if (string.IsNullOrWhiteSpace(cmd)) return (false, "未找到卸载命令（可能被系统保护或已失效）");
+        if (string.IsNullOrWhiteSpace(cmd)) return (false, Loc.T("未找到卸载命令（可能被系统保护或已失效）"));
 
         var (exe, args) = ParseCommand(cmd);
         var result = CmdRunner.Run(exe, args, timeoutMs: 300_000);
         return result.Success
-            ? (true, "卸载程序已执行完成")
-            : (false, $"卸载程序返回异常（退出码 {result.ExitCode}）：{result.Output.Trim()}");
+            ? (true, Loc.T("卸载程序已执行完成"))
+            : (false, Loc.Tf("卸载程序返回异常（退出码 {0}）：{1}", result.ExitCode, result.Output.Trim()));
     }
 
     private static (string exe, string args) ParseCommand(string cmd)

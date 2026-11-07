@@ -14,6 +14,7 @@ public sealed class SettingsService
     private bool _showAnime = true;
     private bool _showRegistryNote;
     private bool _licenseAgreed;
+    private string _language = "zh-Hans";
 
     public event Action? Changed;
 
@@ -54,6 +55,21 @@ public sealed class SettingsService
             }
             LogService.Instance.Info($"设置：显示底层注册表/API 路径 = {(_showRegistryNote ? "开" : "关")}");
             Changed?.Invoke();
+        }
+    }
+
+    /// <summary>界面语言（内嵌简体中文为 zh-Hans；其它为外置语言包 id）。</summary>
+    public string Language
+    {
+        get => _language;
+        set
+        {
+            lock (_lock)
+            {
+                if (_language == value) return;
+                _language = value;
+                Save();
+            }
         }
     }
 
@@ -98,6 +114,7 @@ public sealed class SettingsService
             _showAnime = j.ShowAnime;
             _showRegistryNote = j.ShowRegistryNote;
             _licenseAgreed = j.LicenseAgreed;
+            _language = j.Language ?? "zh-Hans";
         }
         catch { /* ignore */ }
     }
@@ -110,7 +127,8 @@ public sealed class SettingsService
             {
                 ShowAnime = _showAnime,
                 ShowRegistryNote = _showRegistryNote,
-                LicenseAgreed = _licenseAgreed
+                LicenseAgreed = _licenseAgreed,
+                Language = _language
             };
             File.WriteAllText(_file, JsonSerializer.Serialize(j));
         }
@@ -122,5 +140,6 @@ public sealed class SettingsService
         public bool ShowAnime { get; set; } = true;
         public bool ShowRegistryNote { get; set; }
         public bool LicenseAgreed { get; set; }
+        public string? Language { get; set; } = "zh-Hans";
     }
 }

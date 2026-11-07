@@ -8,7 +8,7 @@
     <!-- 主程序名固定为 LetsMeowToolbox.exe -->
     <AssemblyName>LetsMeowToolbox</AssemblyName>
     <!-- 版本号（v0.1.1 起）：主版本.次版本.修订号，更新日志见 Services/AppInfo.cs -->
-    <Version>0.1.2</Version>
+    <Version>0.2.0</Version>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -39,6 +39,19 @@
   <!-- 嵌入资源：GPL-3.0 协议全文（首次启动协议弹窗 / 关于页使用） -->
   <ItemGroup>
     <EmbeddedResource Include="Assets\gpl-3.0.txt" />
+  </ItemGroup>
+
+  <!-- 内嵌语言：简体中文（源语言）随程序打包，无需外置语言包 -->
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\zh-Hans.meowlang" />
+  </ItemGroup>
+
+  <!-- 外置语言包：随程序输出到 lang 目录，启动时自动扫描 -->
+  <ItemGroup>
+    <None Include="..\..\lang\**\*.meowlang"
+          Link="lang\%(RecursiveDir)%(Filename)%(Extension)"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <!-- 二次元化壁纸：随程序输出为松文件（exe 同目录），运行时从磁盘加载 -->

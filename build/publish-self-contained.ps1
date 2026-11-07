@@ -5,14 +5,24 @@
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
 $Out  = Join-Path $Root "dist\self-contained"
+# 注意：仓库路径可能包含单引号（如 Let's meow），不能让 MSBuild 直接往该路径发布，
+# 否则其内部单引号字符串变换会解析失败（MSB3094）。先发布到无引号的临时目录再复制。
+$TempRoot = $env:TEMP
+if (-not $TempRoot) { $TempRoot = Join-Path $env:LOCALAPPDATA "Temp" }
+$Stage = Join-Path $TempRoot "meow-publish-selfcontained"
 
 Write-Host "[1/3] 清理旧产物..." -ForegroundColor Cyan
 if (Test-Path $Out) { Remove-Item $Out -Recurse -Force }
+if (Test-Path $Stage) { Remove-Item $Stage -Recurse -Force }
 
 Write-Host "[2/3] 发布主程序（单文件 · 自包含）..." -ForegroundColor Cyan
 & dotnet publish (Join-Path $Root "src\LetsMeowToolbox.App\LetsMeowToolbox.App.csproj") `
-    -c Release -r win-x64 -p:PublishSingleFile=true --self-contained true -o $Out
+    -c Release -r win-x64 -p:PublishSingleFile=true --self-contained true -o $Stage
 if ($LASTEXITCODE -ne 0) { Write-Error "发布失败"; exit 1 }
+
+# 复制发布产物到 dist（保持目录结构）
+New-Item -ItemType Directory -Force -Path $Out | Out-Null
+Copy-Item (Join-Path $Stage "*") $Out -Recurse -Force
 
 Write-Host "[3/3] 构建高危插件并复制到 plugins 目录..." -ForegroundColor Cyan
 & dotnet build (Join-Path $Root "src\LetsMeowToolbox.Plugins.HighRisk\LetsMeowToolbox.Plugins.HighRisk.csproj") -c Release

@@ -53,11 +53,11 @@ public partial class AdvancedView : UserControl, INotifyPropertyChanged
     private void OnRestoreAll(object sender, RoutedEventArgs e)
     {
         if (!Ui.Confirm(Window.GetWindow(this),
-                "将还原高级区全部设置（更新暂停/禁用等）到默认状态，确定继续吗？", "高级区一键还原"))
+                Loc.T("将还原高级区全部设置（更新暂停/禁用等）到默认状态，确定继续吗？"), Loc.T("高级区一键还原")))
             return;
         var count = BackupService.Instance.RestoreAll();
         FeatureHost.RefreshStates(Features);
         LogService.Instance.Info($"高级区：一键还原 {count} 项设置。");
-        Ui.Success($"已还原 {count} 项高级设置");
+        Ui.Success(Loc.Tf("已还原 {0} 项高级设置", count));
     }
 }

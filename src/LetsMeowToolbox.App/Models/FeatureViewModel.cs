@@ -1,4 +1,4 @@
-using LetsMeowToolbox.App.Models;
+using LetsMeowToolbox.App.Services;
 
 namespace LetsMeowToolbox.App.Models;
 
@@ -6,9 +6,14 @@ namespace LetsMeowToolbox.App.Models;
 public sealed class FeatureViewModel : ObservableObject
 {
     public string Id { get; init; } = string.Empty;
-    public string Title { get; init; } = string.Empty;
-    /// <summary>人话说明。</summary>
-    public string Description { get; init; } = string.Empty;
+
+    private readonly string _title = string.Empty;
+    private readonly string _description = string.Empty;
+
+    /// <summary>功能标题（按当前界面语言显示）。</summary>
+    public string Title { get => Loc.T(_title); init => _title = value; }
+    /// <summary>人话说明（按当前界面语言显示）。</summary>
+    public string Description { get => Loc.T(_description); init => _description = value; }
     /// <summary>底层注册表 / API 路径（可选，可关闭显示）。</summary>
     public string RegistryNote { get; init; } = string.Empty;
     /// <summary>风险标识：🟢 / 🟡 / 🔴。</summary>

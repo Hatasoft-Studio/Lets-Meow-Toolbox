@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using LetsMeowToolbox.App.Services;
 using LetsMeowToolbox.PluginAbstractions;
 
 namespace LetsMeowToolbox.App.Models;
@@ -7,9 +8,9 @@ namespace LetsMeowToolbox.App.Models;
 public sealed class PluginViewModel : ObservableObject
 {
     public IHighRiskPlugin Plugin { get; init; } = null!;
-    public string Name => Plugin.PluginName;
-    public string Description => Plugin.Description;
-    public string Credit => Plugin.Credit;
+    public string Name => Loc.T(Plugin.PluginName);
+    public string Description => Loc.T(Plugin.Description);
+    public string Credit => Loc.T(Plugin.Credit);
     public ObservableCollection<PluginActionViewModel> Actions { get; } = new();
 }
 
@@ -17,9 +18,9 @@ public sealed class PluginViewModel : ObservableObject
 public sealed class PluginActionViewModel : ObservableObject
 {
     public IHighRiskAction Action { get; init; } = null!;
-    public string Title => Action.Title;
-    public string Description => Action.Description;
-    public string Warning => Action.Warning;
+    public string Title => Loc.T(Action.Title);
+    public string Description => Loc.T(Action.Description);
+    public string Warning => Loc.T(Action.Warning);
     public string RegistryNote => Action.RegistryNote;
     public bool RequiresAdmin => Action.RequiresAdmin;
     public string Risk => "🔴";

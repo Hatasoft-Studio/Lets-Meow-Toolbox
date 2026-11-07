@@ -10,7 +10,7 @@ public partial class ChangelogDialog : Window
     public ChangelogDialog()
     {
         InitializeComponent();
-        TxtVersionNote.Text = $"当前版本：v{AppInfo.Version}";
+        TxtVersionNote.Text = Loc.Tf("当前版本：v{0}", AppInfo.Version);
         TxtChangelog.Text = BuildText();
     }
 
@@ -29,16 +29,16 @@ public partial class ChangelogDialog : Window
         {
             sb.AppendLine($"══ {version} · {date} ══");
             foreach (var c in changes)
-                sb.AppendLine(c);
+                sb.AppendLine(Loc.T(c));
             sb.AppendLine();
         }
-        sb.AppendLine("版本规则：");
-        sb.AppendLine("• 主版本号：重大架构调整 / 破坏性变更时 +1（0.x 阶段指整体重构）");
-        sb.AppendLine("• 次版本号：新增功能时 +1");
-        sb.AppendLine("• 修订号：修复缺陷 / 优化时 +1");
+        sb.AppendLine(Loc.T("版本规则："));
+        sb.AppendLine(Loc.T("• 主版本号：重大架构调整 / 破坏性变更时 +1（0.x 阶段指整体重构）"));
+        sb.AppendLine(Loc.T("• 次版本号：新增功能时 +1"));
+        sb.AppendLine(Loc.T("• 修订号：修复缺陷 / 优化时 +1"));
         // 结尾空一行后追加固定致谢语
         sb.AppendLine();
-        sb.AppendLine(AppInfo.ChangelogFooter);
+        sb.AppendLine(Loc.T(AppInfo.ChangelogFooter));
         return sb.ToString().TrimEnd();
     }
 

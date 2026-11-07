@@ -1,4 +1,5 @@
 using System.Text.Json;
+using LetsMeowToolbox.App.Services;
 
 namespace LetsMeowToolbox.App.Models;
 
@@ -25,7 +26,7 @@ public sealed class UwpAppViewModel : ObservableObject
     private string _status = string.Empty;
     public string Status
     {
-        get => _status;
+        get => Loc.T(_status);
         set { Set(ref _status, value); OnPropertyChanged(nameof(HasStatus)); }
     }
     public bool HasStatus => !string.IsNullOrEmpty(_status);
@@ -34,7 +35,7 @@ public sealed class UwpAppViewModel : ObservableObject
         => !string.IsNullOrWhiteSpace(FriendlyName) ? FriendlyName
          : !string.IsNullOrWhiteSpace(Name) ? Name
          : PackageFullName;
-    public string Badge => CoreProtected ? "系统核心·禁止" : (Removable ? "可卸载" : "白名单外");
+    public string Badge => Loc.T(CoreProtected ? "系统核心·禁止" : (Removable ? "可卸载" : "白名单外"));
 }
 
 /// <summary>PowerShell ConvertTo-Json 输出对应的最小字段。</summary>

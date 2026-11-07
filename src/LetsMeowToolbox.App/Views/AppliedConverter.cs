@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Windows.Data;
+using LetsMeowToolbox.App.Services;
 
 namespace LetsMeowToolbox.App.Views;
 
@@ -7,7 +8,7 @@ namespace LetsMeowToolbox.App.Views;
 public sealed class AppliedConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        => value is true ? "已启用" : "未启用";
+        => Loc.T(value is true ? "已启用" : "未启用");
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => throw new NotSupportedException();

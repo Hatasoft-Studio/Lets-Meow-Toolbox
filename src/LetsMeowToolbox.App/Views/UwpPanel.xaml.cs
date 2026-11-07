@@ -30,28 +30,29 @@ public partial class UwpPanel : UserControl, INotifyPropertyChanged
         foreach (var app in list) Apps.Add(app);
         var removable = list.Count(a => a.Removable);
         var core = list.Count(a => a.CoreProtected);
-        TxtHint.Text = $"共 {list.Count} 个应用：可卸载 {removable}，系统核心保护 {core}（不可操作）";
+        TxtHint.Text = Loc.Tf("共 {0} 个应用：可卸载 {1}，系统核心保护 {2}（不可操作）",
+            list.Count, removable, core);
         LogService.Instance.Info($"UWP 列表刷新：共 {list.Count} 个应用（可卸载 {removable}）。");
     }
 
     private async void OnUninstallSelected(object sender, RoutedEventArgs e)
     {
         var selected = Apps.Where(a => a.Removable && a.IsChecked).ToList();
-        if (selected.Count == 0) { Ui.Warning("请先勾选要卸载的预装应用（仅白名单）"); return; }
+        if (selected.Count == 0) { Ui.Warning(Loc.T("请先勾选要卸载的预装应用（仅白名单）")); return; }
         if (!Ui.Confirm(Window.GetWindow(this),
-                $"确认卸载 {selected.Count} 个预装应用吗？\n已勾选的应用都在安全白名单内，系统核心应用不会被触碰。"))
+                Loc.Tf("确认卸载 {0} 个预装应用吗？\n已勾选的应用都在安全白名单内，系统核心应用不会被触碰。", selected.Count)))
             return;
 
         LogService.Instance.Warn($"UWP 卸载开始：共 {selected.Count} 个应用。");
         foreach (var app in selected)
         {
-            TxtHint.Text = $"正在卸载：{app.DisplayName}…";
+            TxtHint.Text = Loc.Tf("正在卸载：{0}…", app.DisplayName);
             var (ok, msg) = UwpCleanModule.Uninstall(app.PackageFullName);
-            app.Status = ok ? "已卸载" : msg;
+            app.Status = ok ? Loc.T("已卸载") : msg;
             LogService.Instance.Info($"UWP 卸载：{app.DisplayName} → {(ok ? "成功" : "失败：" + msg)}");
             await System.Threading.Tasks.Task.Delay(300);
         }
-        Ui.Info("预装应用卸载处理完毕");
+        Ui.Info(Loc.T("预装应用卸载处理完毕"));
         OnRefresh(this, new RoutedEventArgs());
     }
 }

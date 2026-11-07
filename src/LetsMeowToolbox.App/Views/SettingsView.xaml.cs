@@ -28,13 +28,98 @@ public partial class SettingsView : UserControl
         InitializeComponent();
         DataContext = this;
 
-        TxtVersion.Text = $"版本：v{AppInfo.Version}";
+        SetupLanguageSelector();
+        SetupUpdateCard();
+
+        TxtVersion.Text = Loc.Tf("版本：v{0}", AppInfo.Version);
         var os = OsVersionService.FriendlyName;
         TxtAbout.Text =
-            $"支持系统：{os}（Win10/11 x64）\n" +
-            $"许可协议：GPL-3.0（GNU General Public License v3.0）\n" +
-            $"技术栈：WPF · .NET 8 · HandyControl（MIT）\n\n" +
-            "本工具不含任何加壳/混淆逻辑，高危功能仅以外置插件 DLL 形式提供。";
+            Loc.Tf("支持系统：{0}（Win10/11 x64）", os) + "\n" +
+            Loc.T("许可协议：GPL-3.0（GNU General Public License v3.0）") + "\n" +
+            Loc.T("技术栈：WPF · .NET 8 · HandyControl（MIT）") + "\n\n" +
+            Loc.T("本工具不含任何加壳/混淆逻辑，高危功能仅以外置插件 DLL 形式提供。");
+    }
+
+    /// <summary>语言卡片：当前语言 + 选择语言/安装语言包按钮。</summary>
+    private void SetupLanguageSelector()
+    {
+        BtnSelectLanguage.Content = Loc.T("选择语言");
+        BtnInstallLanguage.Content = Loc.T("安装语言包");
+        TxtLanguageHint.Text = Loc.Tf("语言包目录：{0}。可安装第三方语言包，或选择已安装的语言。",
+            LocalizationService.LanguageDirectory);
+        UpdateCurrentLanguage();
+    }
+
+    private void UpdateCurrentLanguage()
+    {
+        var cur = LocalizationService.Instance.Current;
+        TxtCurrentLanguage.Text = Loc.Tf("当前语言：{0}", cur?.DisplayName ?? "简体中文");
+    }
+
+    /// <summary>更新卡片：检查更新按钮文案。</summary>
+    private void SetupUpdateCard()
+    {
+        BtnCheckUpdate.Content = Loc.T("检查更新");
+        TxtUpdateStatus.Text = string.Empty;
+    }
+
+    /// <summary>检查更新：请求官方接口，比较版本号；若当前版本已停止支持则强制退出。</summary>
+    private async void OnCheckUpdate(object sender, RoutedEventArgs e)
+    {
+        var owner = Window.GetWindow(this);
+        var label = BtnCheckUpdate.Content;
+        BtnCheckUpdate.IsEnabled = false;
+        BtnCheckUpdate.Content = Loc.T("正在检查更新…");
+        TxtUpdateStatus.Text = string.Empty;
+
+        try
+        {
+            var result = await UpdateService.CheckAsync();
+
+            if (!result.Success)
+            {
+                TxtUpdateStatus.Text = Loc.Tf("检查更新失败：{0}", result.Error);
+                Ui.Warning(TxtUpdateStatus.Text);
+                return;
+            }
+
+            if (result.Unsupported)
+            {
+                TxtUpdateStatus.Text = Loc.T("当前版本已停止支持，必须更新后才能继续使用。");
+                UpdateDialog.ShowRequired(owner, result);
+                LogService.Instance.Warn($"更新：当前版本 v{AppInfo.Version} 已停止支持，程序退出。");
+                Application.Current.Shutdown(0);
+                return;
+            }
+
+            if (result.HasUpdate)
+            {
+                TxtUpdateStatus.Text = Loc.Tf("发现新版本 v{0}", result.Info!.LatestVersion);
+                UpdateDialog.ShowAvailable(owner, result);
+            }
+            else
+            {
+                TxtUpdateStatus.Text = Loc.Tf("当前已是最新版本（v{0}）", AppInfo.Version);
+                Ui.Success(TxtUpdateStatus.Text);
+            }
+        }
+        finally
+        {
+            BtnCheckUpdate.Content = label;
+            BtnCheckUpdate.IsEnabled = true;
+        }
+    }
+
+    private void OnOpenLanguageManager(object sender, RoutedEventArgs e)
+    {
+        LanguageManagerDialog.Show(Window.GetWindow(this));
+        UpdateCurrentLanguage();
+    }
+
+    private void OnInstallLanguagePack(object sender, RoutedEventArgs e)
+    {
+        LanguageManagerDialog.InstallInteractive(Window.GetWindow(this));
+        UpdateCurrentLanguage();
     }
 
     private void OnViewLicense(object sender, RoutedEventArgs e)
@@ -52,7 +137,7 @@ public partial class SettingsView : UserControl
         catch (Exception ex)
         {
             LogService.Instance.Error($"关于：打开 GitHub 仓库失败：{ex.Message}");
-            Ui.Error("无法打开浏览器访问仓库地址。");
+            Ui.Error(Loc.T("无法打开浏览器访问仓库地址。"));
         }
     }
 
@@ -64,11 +149,11 @@ public partial class SettingsView : UserControl
     private void OnResetAll(object sender, RoutedEventArgs e)
     {
         if (!Ui.Confirm(Window.GetWindow(this),
-            "确定要一键初始化全部内容吗？\n\n" +
-            "• 全部功能设置将还原到系统默认状态\n" +
-            "• 外观选项恢复默认（二次元装饰开启）\n" +
-            "• 清空全部配置预设\n\n" +
-            "此操作不可撤销，确定继续？", "⚠ 一键初始化"))
+            Loc.T("确定要一键初始化全部内容吗？\n\n" +
+                  "• 全部功能设置将还原到系统默认状态\n" +
+                  "• 外观选项恢复默认（二次元装饰开启）\n" +
+                  "• 清空全部配置预设\n\n" +
+                  "此操作不可撤销，确定继续？"), Loc.T("⚠ 一键初始化")))
             return;
 
         // 1) 还原全部功能注册表设置
@@ -81,7 +166,7 @@ public partial class SettingsView : UserControl
         ConfigService.Instance.Clear();
 
         LogService.Instance.Warn($"一键初始化完成：还原功能 {restored} 项，外观复位，预设清空。");
-        Ui.Success($"已还原 {restored} 项设置，外观与预设已复位");
+        Ui.Success(Loc.Tf("已还原 {0} 项设置，外观与预设已复位", restored));
 
         // 4) 重建全部页面以刷新开关状态
         (Window.GetWindow(this) as MainWindow)?.ReloadAllViews();
@@ -91,33 +176,33 @@ public partial class SettingsView : UserControl
     {
         var dlg = new Microsoft.Win32.SaveFileDialog
         {
-            Title = "导出配置预设",
+            Title = Loc.T("导出配置预设"),
             Filter = "Let's Meow 预设 (*.meowpreset)|*.meowpreset",
             FileName = $"meow-preset-{DateTime.Now:yyyyMMdd-HHmmss}.meowpreset"
         };
         if (dlg.ShowDialog(Window.GetWindow(this)) != true) return;
         ConfigService.Instance.Export(dlg.FileName);
         LogService.Instance.Info($"配置：导出预设成功 → {dlg.FileName}");
-        Ui.Success($"预设已导出：{dlg.FileName}");
+        Ui.Success(Loc.Tf("预设已导出：{0}", dlg.FileName));
     }
 
     private void OnImportConfig(object sender, RoutedEventArgs e)
     {
         var dlg = new Microsoft.Win32.OpenFileDialog
         {
-            Title = "导入配置预设",
+            Title = Loc.T("导入配置预设"),
             Filter = "Let's Meow 预设 (*.meowpreset)|*.meowpreset|所有文件 (*.*)|*.*"
         };
         if (dlg.ShowDialog(Window.GetWindow(this)) != true) return;
         try
         {
             var count = ConfigService.Instance.Import(dlg.FileName);
-            Ui.Success($"已导入 {count} 项配置（各功能需重新点按开关生效）");
+            Ui.Success(Loc.Tf("已导入 {0} 项配置（各功能需重新点按开关生效）", count));
         }
         catch (Exception ex)
         {
             LogService.Instance.Error($"配置：导入预设失败：{ex.Message}");
-            Ui.Error($"导入失败：{ex.Message}");
+            Ui.Error(Loc.Tf("导入失败：{0}", ex.Message));
         }
     }
 
@@ -129,6 +214,6 @@ public partial class SettingsView : UserControl
             if (Directory.Exists(dir))
                 Process.Start(new ProcessStartInfo("explorer.exe", dir) { UseShellExecute = true });
         }
-        catch { Ui.Warning("无法打开日志目录"); }
+        catch { Ui.Warning(Loc.T("无法打开日志目录")); }
     }
 }

@@ -1,4 +1,5 @@
 using LetsMeowToolbox.App.Models;
+using LetsMeowToolbox.App.Services;
 
 namespace LetsMeowToolbox.App.Models;
 
@@ -33,7 +34,7 @@ public sealed class UninstallEntry : ObservableObject
     private string _status = string.Empty;
     public string Status
     {
-        get => _status;
+        get => Loc.T(_status);
         set { Set(ref _status, value); OnPropertyChanged(nameof(HasStatus)); }
     }
     public bool HasStatus => !string.IsNullOrEmpty(_status);
@@ -46,6 +47,8 @@ public sealed class UninstallEntry : ObservableObject
 public sealed class ResidueCandidate : ObservableObject
 {
     public string Type { get; init; } = "文件";
+    /// <summary>展示用类型名（按当前界面语言显示，Type 仍保留原文供逻辑判断）。</summary>
+    public string TypeText => Loc.T(Type);
     public string Target { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
     public bool IsRegistry { get; init; }
