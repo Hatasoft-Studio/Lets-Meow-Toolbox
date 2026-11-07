@@ -1,3 +1,5 @@
+> 🌐 **简体中文** · [繁體中文](./README.zh-Hant.md) · [日本語](./README.ja.md) · [English](./README.en.md)
+
 # Let's Meow Toolbox
 
 ## 一个二次元现代化 UI、新手友好的 Windows 10 / 11 一体化调优工具箱
